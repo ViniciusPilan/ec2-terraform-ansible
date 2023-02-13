@@ -1,0 +1,81 @@
+# S3 -----------------------------------------------------------------------
+- hosts: localhost
+  tasks: 
+  - name: Upload das imagens
+    s3_sync:
+      bucket: s3-website-content.vinipilan.com
+      file_root: images/
+
+
+# Web-server --------------------------------------------------------------
+- hosts: web-server
+  tasks:
+  - name: Git clone
+    ansible.builtin.git:
+      repo: https://github.com/ViniciusPilan/aws-project-ec2-s3.git
+      dest: /home/ubuntu/repo
+      version: main
+  - name: Instalar NGINX
+    apt: name=nginx state=latest
+    become: yes
+  - name: Iniciar NGINX
+    service:
+      name: nginx
+      state: started
+    become: yes
+  - name: Configurando o NGINX
+    ansible.builtin.copy:
+      src: /home/ubuntu/repo/web-server/conf.d/default
+      dest: /etc/nginx/sites-enabled/default
+      remote_src: true
+    ansible.builtin.copy:
+      src: /home/ubuntu/repo/web-server/html/
+      dest: /var/www/html
+      remote_src: true
+    become: yes
+  - name: Aplicando as novas configuracoes no NGINX
+    service:
+      name: nginx
+      state: restarted
+    become: yes
+
+
+
+# Load-balancer ------------------------------------------------------------
+- hosts: load-balancer
+  tasks:
+  - name: Git clone
+    ansible.builtin.git:
+      repo: https://github.com/ViniciusPilan/aws-project-ec2-s3.git
+      dest: /home/ubuntu/repo
+      version: main
+  - name: Instalar NGINX
+    apt: name=nginx state=latest
+    become: yes
+  - name: Iniciar NGINX
+    service:
+      name: nginx
+      state: started
+    become: yes
+  - name: Configurando o NGINX
+    ansible.builtin.copy:
+      src: /home/ubuntu/repo/load-balancer/default
+      dest: /etc/nginx/sites-enabled/default
+      remote_src: true
+    become: yes
+  - name: Definindo os IPs para load balancing
+    blockinfile:
+      path: /etc/nginx/sites-enabled/default
+      marker: "#{mark} ANSIBLE MANAGED BLOCK"
+      insertbefore: BOF
+      block: |
+        upstream web-server {
+          server 52.3.151.123:80;
+          server 52.2.2.239:80;
+        }
+    become: yes
+  - name: Aplicando as novas configuracoes no NGINX
+    service:
+      name: nginx
+      state: restarted
+    become: yes

@@ -1,6 +1,6 @@
 ###########################################################
 echo "TASK 01 - CREATING INFRA WITH TERRAFORM"
-cd terraform && ./create_infra.sh
+cd terraform && sudo bash create_infra.sh
 cd ..
 echo
 
@@ -8,7 +8,7 @@ echo
 echo "TASK 02 - PREPARING THE ENVIRONMENT WITH ANSIBLE"
 cd ansible
 python3 script.py
-./execute_ansible.sh
+sudo bash execute_ansible.sh
 cd ..
 echo
 
@@ -18,3 +18,4 @@ cd tests
 python3 script.py
 cd ..
 echo
+

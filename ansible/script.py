@@ -20,6 +20,7 @@ f'''[{host_name}]
 
 inventory_file.close()
 
+
 ## Generating the playbook for ansible
 playbook_file = open("playbook.yaml", "w")
 

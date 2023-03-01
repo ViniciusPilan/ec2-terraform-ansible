@@ -5,8 +5,8 @@
 **/.terraform/*
 
 # .tfstate files
-*.tfstate
-*.tfstate.*
+.tfstate
+.tfstate.*
 
 # Crash log files
 crash.log
@@ -37,7 +37,3 @@ override.tf.json
 terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform,ansible,putty
-
-# Private key
-dev-key
-dev-key.pub

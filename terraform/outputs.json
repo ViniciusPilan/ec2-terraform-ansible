@@ -1,0 +1,27 @@
+{
+  "ami_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "ami-0e2162f7f3582e92f"
+  },
+  "instance_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "i-0cae571f513e8b1c9"
+  },
+  "instance_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "Server"
+  },
+  "instance_public_dns": {
+    "sensitive": false,
+    "type": "string",
+    "value": "ec2-54-175-179-101.compute-1.amazonaws.com"
+  },
+  "instance_public_ipv4": {
+    "sensitive": false,
+    "type": "string",
+    "value": "54.175.179.101"
+  }
+}
